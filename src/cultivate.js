@@ -280,71 +280,97 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
         }
         // console.debug(dirDS_Store);
     }
+  }
 
-    // split into filtered directories and files
-    const directoriesToProcess = [];
-    const filesToProcess = [];
-    for (const fileEntry of allFileEntries) {
-        const fileName = fileEntry.name;
-        if (fileEntry.isDirectory()) {
-            if (micromatch.isMatch(fileName, GITIGNORE) ||
-                micromatch.isMatch(fileName, GARDENIGNORE) ||
-                micromatch.isMatch(fileName + '/', GITIGNORE) ||
-                micromatch.isMatch(fileName + '/', GARDENIGNORE)) {
-                continue;
-            }
-            directoriesToProcess.push(fileName);
-        } else if (fileEntry.isFile()) {
-            if (micromatch.isMatch(fileName, GITIGNORE) ||
-                micromatch.isMatch(fileName, GARDENIGNORE)) {
-                continue;
-            }
-            filesToProcess.push(fileName);
+  // process them all asynchronously
+  let processedFiles = await Promise.all([
+    ...directoriesToProcess.map(async directoryName => {
+      const fileInfo = await cultivateDirectory(
+        directoryName, dirDS_Store, currPath, relativePath, depth
+      );
+      if (renderFreeform && dirDS_Store && directoryName in dirDS_Store && 'Iloc' in dirDS_Store[directoryName]) {
+        fileInfo.location = dirDS_Store[directoryName].Iloc;
+      }
+      return fileInfo;
+    }),
+    ...filesToProcess.map(async fileName => {
+      const fileInfo = await cultivateFile(fileName, currPath);
+      if (renderFreeform && dirDS_Store && fileName in dirDS_Store && 'Iloc' in dirDS_Store[fileName]) {
+        fileInfo.location = dirDS_Store[fileName].Iloc;
+      }
+      return fileInfo;
+    })
+  ]);
+
+  const useGardenStore = true;
+
+  if (useGardenStore === true) {
+    //for each directory
+    let gardenStore;
+    const gardenStorePath = path.join(currPath, ".garden_store.json");
+    try {
+      gardenStore = JSON.parse(await fs.readFile(gardenStorePath, "utf-8"));
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        // File doesn't exist, create with default structure
+        gardenStore = {
+          "sort_order": "alphanumeric",
+          "files": processedFiles
+        };
+        await fs.writeFile(gardenStorePath, JSON.stringify(gardenStore, null, 2));
+        console.log("Couldn't find .garden_store.json, created .garden_store.json with default settings");
+      } else {
+        throw err;
+      }
+    }
+    console.log(gardenStore)
+
+    // check if there is a sortorder
+    switch (gardenStore.sort_order) {
+      case "custom":
+        // create an array of all indices of files within garden_store
+        const fileIndices = [];
+        gardenStore.forEach((file, i) => fileIndices.push(i));
+        try {
+          // check if the processed files are that file. if it is, overwrite it.
+          gardenStore.forEach((file, i) => fileIndices.push(i));
+          console.log(fileIndices)
+        } catch (err) {
+          throw err;
         }
+        break;
+      case "alphanumeric":
+      default:
+        processedFiles.sort((a, b) => a.name.localeCompare(b.name));
+        break;
     }
 
-    // process them all asynchronously
-    let processedFiles = await Promise.all([
-        ...directoriesToProcess.map(async directoryName => {
-            const fileInfo = await cultivateDirectory(
-                directoryName, dirDS_Store, currPath, relativePath, depth
-            );
-            if (renderFreeform && dirDS_Store && directoryName in dirDS_Store && 'Iloc' in dirDS_Store[directoryName]) {
-                fileInfo.location = dirDS_Store[directoryName].Iloc;
-            }
-            return fileInfo;
-        }),
-        ...filesToProcess.map(async fileName => {
-            const fileInfo = await cultivateFile(fileName, currPath);
-            if (renderFreeform && dirDS_Store && fileName in dirDS_Store && 'Iloc' in dirDS_Store[fileName]) {
-                fileInfo.location = dirDS_Store[fileName].Iloc;
-            }
-            return fileInfo;
-        })
-    ]);
+  } else {
+    // if toggled false, just organize them by name
     processedFiles.sort((a, b) => a.name.localeCompare(b.name));
-    dirData.files = processedFiles;
+  }
 
-    if (renderFreeform && !dirData.files.every(fileInfo => 'location' in fileInfo)) {
-        renderFreeform = false;
-    }
-    const processedFileCount = dirData.files.length;
+  dirData.files = processedFiles;
 
-    // if freeform, do a hack to kinda "center" the contents
-    if (renderFreeform) {
-        // normalize locations
-        const locationsX = dirData.files.map((fileInfo) => fileInfo.location.x);
-        const locationsY = dirData.files.map((fileInfo) => fileInfo.location.y);
-        const minLocationX = Math.min(...locationsX);
-        const maxLocationX = Math.max(...locationsX);
-        const minLocationY = Math.min(...locationsY);
-        // const maxLocationY = Math.max(...locationsY);
-        for (const fileInfo of dirData.files) {
-            fileInfo.location.x -= minLocationX;
-            fileInfo.location.y -= minLocationY;
-            fileInfo.location.y += TOP_PADDING_PX_FREEFORM;
-        }
-        dirData.centerOffset = (maxLocationX - minLocationX) / 2.0;
+  // positioning/rendering location
+  if (renderFreeform && !dirData.files.every(fileInfo => 'location' in fileInfo)) {
+    renderFreeform = false;
+  }
+  const processedFileCount = dirData.files.length;
+
+  // if freeform, do a hack to kinda "center" the contents
+  if (renderFreeform) {
+    // normalize locations
+    const locationsX = dirData.files.map((fileInfo) => fileInfo.location.x);
+    const locationsY = dirData.files.map((fileInfo) => fileInfo.location.y);
+    const minLocationX = Math.min(...locationsX);
+    const maxLocationX = Math.max(...locationsX);
+    const minLocationY = Math.min(...locationsY);
+    // const maxLocationY = Math.max(...locationsY);
+    for (const fileInfo of dirData.files) {
+      fileInfo.location.x -= minLocationX;
+      fileInfo.location.y -= minLocationY;
+      fileInfo.location.y += TOP_PADDING_PX_FREEFORM;
     }
 
     // generate html file from associated template
