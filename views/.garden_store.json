@@ -1,0 +1,17 @@
+{
+  "sort_order": "alphanumeric",
+  "files": [
+    {
+      "path": "formal.ejs",
+      "name": "formal.ejs",
+      "size": "4.17kB",
+      "type": "other"
+    },
+    {
+      "path": "natural.ejs",
+      "name": "natural.ejs",
+      "size": "4.45kB",
+      "type": "other"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "sort_order": "alphanumeric",
+  "files": [
+    {
+      "path": "LICENSE",
+      "name": "LICENSE",
+      "size": "1.07kB",
+      "type": "other"
+    },
+    {
+      "path": "main.py",
+      "name": "main.py",
+      "size": "2.66kB",
+      "type": "other"
+    },
+    {
+      "path": "parse.py",
+      "name": "parse.py",
+      "size": "20.8kB",
+      "type": "other"
+    }
+  ]
+}

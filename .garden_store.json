@@ -1,0 +1,80 @@
+{
+  "sort_order": "alphanumeric",
+  "files": [
+    {
+      "path": "src/",
+      "name": "src/",
+      "type": "directory",
+      "contents": "3 items",
+      "location": {
+        "x": 432,
+        "y": 637
+      }
+    },
+    {
+      "path": "views/",
+      "name": "views/",
+      "type": "directory",
+      "contents": "2 items",
+      "location": {
+        "x": 531,
+        "y": 542
+      }
+    },
+    {
+      "path": "CNAME",
+      "name": "CNAME",
+      "size": "13B",
+      "type": "raw",
+      "contents": "file.gallery\n",
+      "location": {
+        "x": 626,
+        "y": 158
+      }
+    },
+    {
+      "path": "LICENSE",
+      "name": "LICENSE",
+      "size": "11.4kB",
+      "type": "other",
+      "location": {
+        "x": 411,
+        "y": 530
+      }
+    },
+    {
+      "path": "Screenshot 2025-05-23 at 12.30.06 AM.webp",
+      "name": "Screenshot 2025-05-23 at 12.30.06 AM.webp",
+      "size": "3.74kB",
+      "type": "image",
+      "width": 600,
+      "height": 499,
+      "location": {
+        "x": 172,
+        "y": 411
+      }
+    },
+    {
+      "path": "about.md",
+      "name": "about.md",
+      "size": "744B",
+      "type": "markdown",
+      "contents": "<p><a href=\"https://file.gallery\">file.gallery</a> is a website sown from<br>\nfiles, directories, and .DS_Store.</p>\n<p>file.gallery is a cleaned-up mirror<br>\nof <a href=\"https://kevin.garden\">kevin.garden</a> for easier setup.<br>\nget the source files <a href=\"https://github.com/inchkev/file-gallery\">here</a> to start<br>\nyour own file garden, gallery, etc.</p>\n<h4><em>/src, /views: see <a href=\"https://github.com/inchkev/file-gallery?tab=readme-ov-file#license\">license</a></em><br><em>all other content: <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">cc by-sa 4.0</a></em></h4>\n<p>directory</p>\n<ul>\n<li><a href=\"https://kevin.garden\">kevin.garden</a></li>\n<li><a href=\"https://ryanyan.garden\">ryanyan.garden</a></li>\n<li><a href=\"https://jakewel.ch/\">jakewel.ch</a></li>\n<li><a href=\"https://moonlit.exposed/\">moonlit.exposed</a></li>\n<li><a href=\"https://tilde.kiki.directory/\">tilde.kiki.directory</a></li>\n</ul>\n",
+      "location": {
+        "x": 531,
+        "y": 154
+      }
+    },
+    {
+      "path": "last updated",
+      "name": "last updated",
+      "size": "11B",
+      "type": "raw",
+      "contents": "2026-01-21\n",
+      "location": {
+        "x": 478,
+        "y": 251
+      }
+    }
+  ]
+}
