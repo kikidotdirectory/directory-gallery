@@ -346,18 +346,43 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
         throw err;
       }
     }
-    console.log(gardenStore)
+    // console.log(gardenStore)
 
     // check if there is a sortorder
     switch (gardenStore.sort_order) {
       case "custom":
         // create an array of all indices of files within garden_store
-        const fileIndices = [];
-        gardenStore.forEach((file, i) => fileIndices.push(i));
+        const fileIndices = gardenStore.files.map((_, i) => i);
+
         try {
-          // check if the processed files are that file. if it is, overwrite it.
-          gardenStore.forEach((file, i) => fileIndices.push(i));
-          console.log(fileIndices)
+          // iterate through processedFiles
+          processedFiles.forEach((processedFile) => {
+            // does the file exist in garden_store.files?
+            const existingIndex = gardenStore.files.findIndex(
+              (storeFile) => storeFile.path === processedFile.path
+            );
+
+            // if findIndex does not return -1 (no match), i.e. it exists in the array, update it at its index
+            if (existingIndex !== -1) {
+              gardenStore.files[existingIndex] = processedFile;
+
+              const indexInArray = fileIndices.indexOf(existingIndex);
+              if (indexInArray !== -1) {
+                fileIndices.splice(indexInArray, 1);
+              }
+            } else {
+              // if it's not in the array, it must be a new file so add it at the end
+              gardenStore.files.push(processedFile);
+            }
+          });
+
+          // Step 4: Remove files at remaining indices (in reverse to avoid index shifting)
+          fileIndices.sort((a, b) => b - a).forEach((index) => {
+            gardenStore.files.splice(index, 1);
+          });
+
+          // Set processedFiles to the ordered version
+          processedFiles = gardenStore.files;
         } catch (err) {
           throw err;
         }
