@@ -238,6 +238,96 @@ async function cultivateFile(fileName, currPath) {
   return fileInfo;
 }
 
+/**
+ * Loads .garden_store.json from the given path, or creates it with default settings if not found.
+ *
+ * @param {string} currPath - The directory path to load/create the garden store in
+ * @param {Array} processedFiles - Default files to use if creating a new garden store
+ * @returns {object} The garden store configuration object
+ */
+async function loadOrCreateGardenStore(currPath, processedFiles) {
+  const gardenStorePath = path.join(currPath, ".garden_store.json");
+
+  try {
+    return JSON.parse(await fs.readFile(gardenStorePath, "utf-8"));
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const defaultStore = {
+        "sort_order": "alphanumeric",
+        "files": processedFiles
+      };
+      await fs.writeFile(gardenStorePath, JSON.stringify(defaultStore, null, 2));
+      console.log("Created .garden_store.json with default settings");
+      return defaultStore;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Synchronizes the custom sort order from the garden store with current files.
+ * Updates existing files in place, appends new files, and removes deleted files.
+ *
+ * @param {Array} storedFiles - Files array from the garden store with custom order
+ * @param {Array} currentFiles - Currently processed files from the filesystem
+ * @returns {Array} The synchronized file list in custom order
+ */
+async function syncCustomOrder(storedFiles, currentFiles) {
+  // Track which stored file indices haven't been matched yet (these are deleted files)
+  const indicesToRemove = storedFiles.map((_, i) => i);
+
+  currentFiles.forEach((processedFile) => {
+    const existingIndex = storedFiles.findIndex(
+      (storeFile) => storeFile.path === processedFile.path
+    );
+
+    if (existingIndex !== -1) {
+      // File exists in store - update it with fresh data
+      storedFiles[existingIndex] = processedFile;
+
+      // Mark this index as still valid (not deleted)
+      const indexInArray = indicesToRemove.indexOf(existingIndex);
+      if (indexInArray !== -1) {
+        indicesToRemove.splice(indexInArray, 1);
+      }
+    } else {
+      // New file not in store - append to end
+      storedFiles.push(processedFile);
+    }
+  });
+
+  // Remove deleted files (in reverse to avoid index shifting)
+  indicesToRemove.sort((a, b) => b - a).forEach((index) => {
+    storedFiles.splice(index, 1);
+  });
+
+  return storedFiles;
+}
+
+/**
+ * Applies the specified sort order to the processed files.
+ *
+ * @param {string} currPath - The directory path for saving updated garden store
+ * @param {object} gardenStore - The garden store configuration
+ * @param {Array} processedFiles - Files to sort
+ * @returns {Array} The sorted file list
+ */
+async function applySortOrder(currPath, gardenStore, processedFiles) {
+  switch (gardenStore.sort_order) {
+    case "custom":
+      const sortedFiles = syncCustomOrder(gardenStore.files, processedFiles);
+      // Persist the updated file order back to the garden store
+      await fs.writeFile(
+        path.join(currPath, ".garden_store.json"),
+        JSON.stringify(gardenStore, null, 2)
+      );
+      return sortedFiles;
+    case "alphanumeric":
+    default:
+      return processedFiles.sort((a, b) => a.name.localeCompare(b.name));
+  }
+}
+
 
 /**
  * :house_with_garden:
@@ -327,74 +417,10 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
 
   const useGardenStore = true;
 
-  if (useGardenStore === true) {
-    //for each directory
-    let gardenStore;
-    const gardenStorePath = path.join(currPath, ".garden_store.json");
-    try {
-      gardenStore = JSON.parse(await fs.readFile(gardenStorePath, "utf-8"));
-    } catch (err) {
-      if (err.code === 'ENOENT') {
-        // File doesn't exist, create with default structure
-        gardenStore = {
-          "sort_order": "alphanumeric",
-          "files": processedFiles
-        };
-        await fs.writeFile(gardenStorePath, JSON.stringify(gardenStore, null, 2));
-        console.log("Couldn't find .garden_store.json, created .garden_store.json with default settings");
-      } else {
-        throw err;
-      }
-    }
-    // console.log(gardenStore)
-
-    // check if there is a sortorder
-    switch (gardenStore.sort_order) {
-      case "custom":
-        // create an array of all indices of files within garden_store
-        const fileIndices = gardenStore.files.map((_, i) => i);
-
-        try {
-          // iterate through processedFiles
-          processedFiles.forEach((processedFile) => {
-            // does the file exist in garden_store.files?
-            const existingIndex = gardenStore.files.findIndex(
-              (storeFile) => storeFile.path === processedFile.path
-            );
-
-            // if findIndex does not return -1 (no match), i.e. it exists in the array, update it at its index
-            if (existingIndex !== -1) {
-              gardenStore.files[existingIndex] = processedFile;
-
-              const indexInArray = fileIndices.indexOf(existingIndex);
-              if (indexInArray !== -1) {
-                fileIndices.splice(indexInArray, 1);
-              }
-            } else {
-              // if it's not in the array, it must be a new file so add it at the end
-              gardenStore.files.push(processedFile);
-            }
-          });
-
-          // Step 4: Remove files at remaining indices (in reverse to avoid index shifting)
-          fileIndices.sort((a, b) => b - a).forEach((index) => {
-            gardenStore.files.splice(index, 1);
-          });
-
-          // Set processedFiles to the ordered version
-          processedFiles = gardenStore.files;
-        } catch (err) {
-          throw err;
-        }
-        break;
-      case "alphanumeric":
-      default:
-        processedFiles.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-    }
-
+  if (useGardenStore) {
+    const gardenStore = await loadOrCreateGardenStore(currPath, processedFiles);
+    processedFiles = await applySortOrder(currPath, gardenStore, processedFiles);
   } else {
-    // if toggled false, just organize them by name
     processedFiles.sort((a, b) => a.name.localeCompare(b.name));
   }
 
