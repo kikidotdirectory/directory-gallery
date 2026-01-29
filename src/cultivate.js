@@ -447,11 +447,7 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
   }
 
   // generate html file from associated template
-  if (renderFreeform) {
-    dirData.layout = 'natural'
-  } else {
-    dirData.layout = 'formal'
-  }
+  dirData.layout = renderFreeform ? 'natural' : 'formal';
   const html = COMPILED_TEMPLATE(dirData);
   const outputPath = path.join(currPath, 'index.html');
 
