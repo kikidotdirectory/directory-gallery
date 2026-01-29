@@ -51,15 +51,8 @@ const __dirname = path.dirname(__filename);
 const GARDEN_DIR = path.join(__dirname, '..')
 const TEMPLATE_DIR = path.join(GARDEN_DIR, 'views');
 
-const TEMPLATE_FILES = ['base.ejs'];
-const COMPILED_TEMPLATES = (await Promise.all(TEMPLATE_FILES.map(async file => {
-  const templatePath = path.join(TEMPLATE_DIR, file);
-  const template = ejs.compile(await fs.readFile(templatePath, 'utf8'), { filename: templatePath });
-  return { file, template };
-}))).reduce((acc, { file, template }) => {
-  acc[file] = template;
-  return acc;
-}, {});
+const TEMPLATE_PATH = path.join(TEMPLATE_DIR, 'base.ejs');
+const COMPILED_TEMPLATE = ejs.compile(await fs.readFile(TEMPLATE_PATH, 'utf8'), { filename: TEMPLATE_PATH });
 
 const GITIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gitignore'), 'utf8')).patterns;
 const GARDENIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gardenignore'), 'utf8')).patterns;
@@ -459,7 +452,7 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
   } else {
     dirData.layout = 'formal'
   }
-  const html = COMPILED_TEMPLATES['base.ejs'](dirData);
+  const html = COMPILED_TEMPLATE(dirData);
   const outputPath = path.join(currPath, 'index.html');
 
   // plant html file
