@@ -1,5 +1,5 @@
 {
-  "sort_order": "alphanumeric",
+  "sort_order": "custom",
   "files": [
     {
       "path": "src/",
@@ -7,18 +7,8 @@
       "type": "directory",
       "contents": "3 items",
       "location": {
-        "x": 432,
-        "y": 637
-      }
-    },
-    {
-      "path": "views/",
-      "name": "views/",
-      "type": "directory",
-      "contents": "2 items",
-      "location": {
-        "x": 531,
-        "y": 542
+        "x": 632,
+        "y": 360
       }
     },
     {
@@ -28,8 +18,8 @@
       "type": "raw",
       "contents": "file.gallery\n",
       "location": {
-        "x": 626,
-        "y": 158
+        "x": 585,
+        "y": 143
       }
     },
     {
@@ -38,8 +28,8 @@
       "size": "11.4kB",
       "type": "other",
       "location": {
-        "x": 411,
-        "y": 530
+        "x": 698,
+        "y": 186
       }
     },
     {
@@ -50,19 +40,29 @@
       "width": 600,
       "height": 499,
       "location": {
-        "x": 172,
-        "y": 411
+        "x": 629,
+        "y": 463
       }
     },
     {
       "path": "about.md",
       "name": "about.md",
-      "size": "744B",
+      "size": "732B",
       "type": "markdown",
-      "contents": "<p><a href=\"https://file.gallery\">file.gallery</a> is a website sown from<br>\nfiles, directories, and .DS_Store.</p>\n<p>file.gallery is a cleaned-up mirror<br>\nof <a href=\"https://kevin.garden\">kevin.garden</a> for easier setup.<br>\nget the source files <a href=\"https://github.com/inchkev/file-gallery\">here</a> to start<br>\nyour own file garden, gallery, etc.</p>\n<h4><em>/src, /views: see <a href=\"https://github.com/inchkev/file-gallery?tab=readme-ov-file#license\">license</a></em><br><em>all other content: <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">cc by-sa 4.0</a></em></h4>\n<p>directory</p>\n<ul>\n<li><a href=\"https://kevin.garden\">kevin.garden</a></li>\n<li><a href=\"https://ryanyan.garden\">ryanyan.garden</a></li>\n<li><a href=\"https://jakewel.ch/\">jakewel.ch</a></li>\n<li><a href=\"https://moonlit.exposed/\">moonlit.exposed</a></li>\n<li><a href=\"https://tilde.kiki.directory/\">tilde.kiki.directory</a></li>\n</ul>\n",
+      "contents": "<p><a href=\"\">directory.gallery</a> is a a website sown from files, directories, and .DS_Store.</p>\n<p>directory.gallery extends and is a fork of <a href=\"https://file.gallery\">file.gallery</a> which is a cleaned-up mirror of <a href=\"https://kevin.garden\">kevin.garden</a>. </p>\n<p>if any of my modifications interest you, you can find the source code <a href=\"https://github.com/kikidotdirectory/directory-gallery\">here</a>. if you want to just start your own file garden, gallery, etc., you can find the source code for file.gallery <a href=\"https://github.com/inchkev/file-gallery\">here</a>.</p>\n<h4><em>/src, /views: see <a href=\"https://github.com/kikidotdirectory/directory-gallery?tab=readme-ov-file#license\">license</a></em><br><em>all other content: <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">cc by-sa 4.0</a></em></h4>\n",
       "location": {
-        "x": 531,
-        "y": 154
+        "x": 252,
+        "y": 127
+      }
+    },
+    {
+      "path": "views/",
+      "name": "views/",
+      "type": "directory",
+      "contents": "3 items",
+      "location": {
+        "x": 644,
+        "y": 297
       }
     },
     {
@@ -72,8 +72,40 @@
       "type": "raw",
       "contents": "2026-01-21\n",
       "location": {
-        "x": 478,
-        "y": 251
+        "x": 587,
+        "y": 205
+      }
+    },
+    {
+      "path": "garden-store/",
+      "name": "garden-store/",
+      "type": "directory",
+      "contents": "1 item",
+      "location": {
+        "x": 699,
+        "y": 327
+      }
+    },
+    {
+      "path": "notable-changes.md",
+      "name": "notable-changes.md",
+      "size": "221B",
+      "type": "markdown",
+      "contents": "<ul>\n<li><a href=\"/garden-store\">.garden_store.json</a><br>\nadds a configuration file to each directory </li>\n<li>base.ejs(/views/base.ejs) and base.css(/src/base.css)<br>\nrefactor templates to make file.gallery more easily extensible &amp; modular.</li>\n</ul>\n",
+      "location": {
+        "x": 255,
+        "y": 424
+      }
+    },
+    {
+      "path": "adjustments.md",
+      "name": "adjustments.md",
+      "size": "127B",
+      "type": "markdown",
+      "contents": "<h3>markdown</h3>\n<ul>\n<li>add max-width (currently set to <code>30ch</code>)</li>\n</ul>\n<h3>templates</h3>\n<ul>\n<li>wrapped &#39;back&#39; in &lt;nav&gt; and moved outside &lt;main&gt;</li>\n</ul>\n",
+      "location": {
+        "x": 255,
+        "y": 572
       }
     }
   ]
