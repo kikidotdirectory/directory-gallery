@@ -12,15 +12,25 @@
   <meta name="description" content="a site sown from files and directories">
 
   <link rel='stylesheet' href='/src/base.css'>
+  <style>
   <%# if there is a background color, render it conditionally %>
   <%_ if (locals.backgroundColor) { _%>
-    <style>
-      body {
-        color: <%=textColor %>;
-        background-color: <%=backgroundColor %>;
-      }
-    </style>
+    body {
+      color: <%=textColor %>;
+      background-color: <%=backgroundColor %>;
+    }
   <%_ } _%>
+  <%_ if (layout === 'natural') { _%>
+    .item {
+      display: block;
+      position: absolute;
+    }
+  <%_ } else { _%>
+    .item {
+      display: inline-block;
+    }
+  <%_ } _%>
+  </style>
 </head>
 
 <body>
