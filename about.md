@@ -1,17 +1,7 @@
-[file.gallery](https://file.gallery) is a website sown from<br>
-files, directories, and .DS_Store.
+[directory.gallery]() is a a website sown from files, directories, and .DS_Store.
 
-file.gallery is a cleaned-up mirror<br>
-of [kevin.garden](https://kevin.garden) for easier setup.<br>
-get the source files [here](https://github.com/inchkev/file-gallery) to start<br>
-your own file garden, gallery, etc.
+directory.gallery extends and is a fork of [file.gallery](https://file.gallery) which is a cleaned-up mirror of [kevin.garden](https://kevin.garden). 
 
-#### _/src, /views: see [license](https://github.com/inchkev/file-gallery?tab=readme-ov-file#license)_<br>_all other content: [cc by-sa 4.0](https://creativecommons.org/licenses/by-sa/4.0/)_
+if any of my modifications interest you, you can find the source code [here](https://github.com/kikidotdirectory/directory-gallery). if you want to just start your own file garden, gallery, etc., you can find the source code for file.gallery [here](https://github.com/inchkev/file-gallery).
 
-directory
-
-- [kevin.garden](https://kevin.garden)
-- [ryanyan.garden](https://ryanyan.garden)
-- [jakewel.ch](https://jakewel.ch/)
-- [moonlit.exposed](https://moonlit.exposed/)
-- [tilde.kiki.directory](https://tilde.kiki.directory/)
+#### _/src, /views: see [license](https://github.com/kikidotdirectory/directory-gallery?tab=readme-ov-file#license)_<br>_all other content: [cc by-sa 4.0](https://creativecommons.org/licenses/by-sa/4.0/)_
