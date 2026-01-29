@@ -94,3 +94,7 @@ a {
 .md pre {
   margin-top: 1em;
 }
+
+.md * {
+  max-width: 50ch;
+}
