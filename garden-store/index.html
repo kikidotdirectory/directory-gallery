@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- this html file was created by https://file.gallery/src/cultivate.js -->
+<!-- templating redone by kiki ~ https://tilde.kiki.directory -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>file.gallery/garden-store/</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="author" content="file.gallery">
+  <meta name="description" content="a site sown from files and directories">
+
+  <link rel='stylesheet' href='/src/base.css'>
+  
+</head>
+
+<body>
+  <nav>
+    <h1>garden-store/</h1>
+    <p><a href="..">back</a></p>
+  </nav>
+
+    <main>
+  <div class="plantbed">
+    <div class="item">
+      <h3><a href="notes.md">notes.md</a> (1.58kB)</h3>
+      <div class="md">
+        <p>can read from a json
+can write to a json</p>
+<h1>implementing custom ordering into file.gallery</h1>
+<p>currently, file.gallery has no way of knowing how files should be ordered semantically. the current implementation organizes them alphanumerically which works for formal compositions but in natural compositions results in a dom order that is nonsensical (reword this). </p>
+<p>taking inspiration from ds_store</p>
+<p>garden_store will allow file.gallery to remember the semantic order of files while not affecting how they are rendered. it should also enable things like</p>
+<ul>
+<li>custom sorting per directory through a sort-method property</li>
+<li>potential optimizations for only updating items if they have moved or only replanting index.html&#39;s if the directory has been updated (file.gallery likely does not need this kind of optimization, but it would be possible!)</li>
+</ul>
+<p>check if the file exists in garden_store</p>
+<ol>
+<li>when processing a directory, make a new array for each index in garden_store.json</li>
+<li>for each file in processedfiles, iterate through garden_store&#39;s files array with each index stored in the new array</li>
+<li>if it does, update the file at its index and then remove the index from the stored indexes array. if it does not exist, push it to the end of garden_store&#39;s files.</li>
+<li>at the end, if there are any indexes left in the stored index array, remove the items at those indexes from garden_store&#39;s files (as they are no longer in the directory or have been added to gardenignore)</li>
+<li>update the index.html, iterating through the order of files in garden_store</li>
+</ol>
+<h1>gardenconfig</h1>
+<p>make features opt-in only</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+<!--
+kevin.garden (formal template) by Kevin Chen, 2023-2025
+licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
+please link to https://kevin.garden/ or https://file.gallery/, if possible
+attribution only in the html source is sufficient. non-commercial use only :)
+-->
+</html>
