@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- this html file was created by https://file.gallery/src/cultivate.js -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>file.gallery<% if (locals.title && title) { %>/<%= title %><% } %></title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="author" content="file.gallery">
+
+  <link rel='stylesheet' href='/views/base.css'>
+  <style>
+    <%# if there is a background color, render it conditionally #%>
+    <%_ if (locals.backgroundColor) { _%>
+      body {
+        color: <%=textColor %>;
+        background-color: <%=backgroundColor %>;
+      }
+    <%_ } _%>
+  </style>
+</head>
+
+<body>
+  <%_ if (locals.title && title) { _%>
+    <nav>
+      <h3><a href="..">back</a></h3>
+      <p><%= title %></p>
+    </nav>
+  <%_ } _%>
+
+  <%_ if (layout === 'natural') { _%>
+    <%- include('natural.ejs')%>
+  <%_ } else { _%>
+    <%- include('formal.ejs')%>
+  <%_ } _%>
+</body>
+<!--
+kevin.garden (natural template) by Kevin Chen, 2023-2025
+licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
+please link to https://kevin.garden/ or https://file.gallery/, if possible
+attribution only in the html source is sufficient. non-commercial use only :)
+-->
+</html>

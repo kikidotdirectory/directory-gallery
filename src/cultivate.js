@@ -47,10 +47,10 @@ const __dirname = path.dirname(__filename);
 const GARDEN_DIR = path.join(__dirname, '..')
 const TEMPLATE_DIR = path.join(GARDEN_DIR, 'views');
 
-const TEMPLATE_FILES = ['natural.ejs', 'formal.ejs'];
+const TEMPLATE_FILES = ['base.ejs'];
 const COMPILED_TEMPLATES = (await Promise.all(TEMPLATE_FILES.map(async file => {
   const templatePath = path.join(TEMPLATE_DIR, file);
-  const template = ejs.compile(await fs.readFile(templatePath, 'utf8'));
+  const template = ejs.compile(await fs.readFile(templatePath, 'utf8'), { filename: templatePath });
   return { file, template };
 }))).reduce((acc, { file, template }) => {
   acc[file] = template;
@@ -450,7 +450,12 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
   }
 
   // generate html file from associated template
-  const html = COMPILED_TEMPLATES[renderFreeform ? 'natural.ejs' : 'formal.ejs'](dirData);
+  if (renderFreeform) {
+    dirData.layout = 'natural'
+  } else {
+    dirData.layout = 'formal'
+  }
+  const html = COMPILED_TEMPLATES['base.ejs'](dirData);
   const outputPath = path.join(currPath, 'index.html');
 
   // plant html file
