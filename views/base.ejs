@@ -21,6 +21,17 @@
     }
   <%_ } _%>
   <%_ if (layout === 'natural') { _%>
+    html, body {
+      height: 100%
+    }
+    main {
+      max-width: 100%;
+      align-items: center;
+    }
+    .plantbed {
+      width: 0;
+      position: relative;
+    }
     .item {
       display: block;
       position: absolute;
@@ -28,6 +39,8 @@
   <%_ } else { _%>
     .item {
       display: inline-block;
+      margin: 1em 0;
+      max-width: 30em;
     }
   <%_ } _%>
   </style>
