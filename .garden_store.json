@@ -104,8 +104,8 @@
       "type": "markdown",
       "contents": "<h3>markdown</h3>\n<ul>\n<li>add max-width (currently set to <code>30ch</code>)</li>\n</ul>\n<h3>templates</h3>\n<ul>\n<li>wrapped &#39;back&#39; in &lt;nav&gt; and moved outside &lt;main&gt;</li>\n</ul>\n",
       "location": {
-        "x": 255,
-        "y": 572
+        "x": 256,
+        "y": 585
       }
     }
   ]
